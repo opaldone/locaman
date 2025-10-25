@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Locaman</string>
+    <string name="head_set">Settings</string>
+    <string name="apply">Apply</string>
+    <string name="close">Close</string>
+    <string name="host_url">opaldone.su</string>
+    <string name="ws_port">8088</string>
+    <string name="nik">SOME USER</string>
+    <string-array name="host_list">
+        <item>admigo.so</item>
+        <item>opaldone.su</item>
+        <item>opaldone.click</item>
+    </string-array>
+</resources>
