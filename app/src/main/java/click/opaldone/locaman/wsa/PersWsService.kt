@@ -29,7 +29,9 @@ import click.opaldone.locaman.dts.ShareTools
 import click.opaldone.locaman.dts.Message
 import click.opaldone.locaman.dts.getJsonHi
 import click.opaldone.locaman.dts.decMessage
+import click.opaldone.locaman.dts.decReqChat
 import click.opaldone.locaman.dts.getJsonLoca
+import click.opaldone.locaman.loga.show_log
 
 class PersWsService : Service() {
     private var wscli: WebSocket? = null
@@ -120,11 +122,58 @@ class PersWsService : Service() {
         }
     }
 
+    fun isAppInstalled(packageName: String): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
+    fun try_start_chat(msg: Message) {
+        val pack = this.getString(R.string.chat_pack)
+        val chat_act = this.getString(R.string.chat_act)
+
+        if (!isAppInstalled(pack)) {
+            notif("Opaloca is not installed")
+            return
+        }
+
+        val rech = decReqChat(msg.content)
+
+        if (rech == null) {
+            notif("Trying start chat roomid is empty")
+            return
+        }
+
+        val launchIntent = packageManager.getLaunchIntentForPackage(pack)
+
+        if (launchIntent == null) {
+            notif("Opaloca launchIntent is null")
+            return
+        }
+
+        launchIntent.putExtra("roomid", rech.roomid)
+
+        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(launchIntent)
+
+        val intent = Intent(chat_act).apply {
+            setPackage(pack)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra("roomid", rech?.roomid)
+        }
+        sendBroadcast(intent)
+    }
+
     fun ws_msg(text: String) {
         val msg = decMessage(text)
+
         msg?.let {
             when(msg.tp) {
                 Message.RLOCA -> send_loca()
+                Message.GOCHAT -> try_start_chat(msg)
             }
         }
     }
