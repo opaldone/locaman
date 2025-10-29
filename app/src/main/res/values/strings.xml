@@ -6,6 +6,8 @@
     <string name="host_url">opaldone.su</string>
     <string name="ws_port">8088</string>
     <string name="nik">SOME USER</string>
+    <string name="chat_pack">click.opaldone.opaloca</string>
+    <string name="chat_act">click.opaldone.opaloca.OPALOCA_CHAT_START</string>
     <string-array name="host_list">
         <item>admigo.so</item>
         <item>opaldone.su</item>

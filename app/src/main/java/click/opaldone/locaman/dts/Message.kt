@@ -3,6 +3,7 @@ package click.opaldone.locaman.dts
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import android.location.Location
+import click.opaldone.locaman.loga.show_log
 
 data class Message(
     val tp: String,
@@ -12,6 +13,7 @@ data class Message(
         const val RLOCA    = "rloca"
         const val ALOCA    = "aloca"
         const val SENDERHI = "sender_hi"
+        const val GOCHAT = "go_chat"
     }
 }
 
@@ -29,13 +31,27 @@ data class ClientHi(
     val pos: Lo?
 )
 
+data class ReqChat(
+    val roomid: String
+)
+
 fun decMessage(msg: String): Message? {
     var ret: Message? = null
 
+    val gson = Gson()
+    ret = gson.fromJson(msg, Message::class.java)
+
+    return ret
+}
+
+fun decReqChat(cont: String): ReqChat? {
+    var ret: ReqChat? = null
+
     try {
         val gson = Gson()
-        ret = gson.fromJson(msg, Message::class.java)
+        ret = gson.fromJson(cont, ReqChat::class.java)
     } catch(e: JsonSyntaxException) {
+        show_log("decReqChat error: ${e.message}")
     }
 
     return ret

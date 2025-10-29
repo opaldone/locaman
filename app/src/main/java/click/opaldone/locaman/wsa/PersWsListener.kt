@@ -8,6 +8,7 @@ import click.opaldone.locaman.dts.ShareTools
 class PersWsListener(
     private val ser: PersWsService,
 ) : WebSocketListener() {
+    private val sha = ShareTools(ser)
     private var _isconnected: Boolean = false
 
     fun isConnected(): Boolean {
@@ -16,7 +17,6 @@ class PersWsListener(
 
     private fun set_sha_con(valin: Boolean) {
         _isconnected = valin
-        val sha = ShareTools(ser)
         sha.set_ws_connected(valin)
     }
 

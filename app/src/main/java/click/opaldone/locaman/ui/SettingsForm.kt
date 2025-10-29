@@ -140,7 +140,6 @@ fun ShowSettingsForm(ctx: Context) {
                 end = 30.dp,
                 top = 15.dp,
                 bottom = 15.dp
-
             )
         ) {
             ExpaList(host_url, host_list, "HOST")
