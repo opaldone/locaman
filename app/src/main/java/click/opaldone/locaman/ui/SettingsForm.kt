@@ -60,6 +60,7 @@ fun ExpaList(state: MutableState<String>, list_items: Array<String>, lbl: String
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
                 .fillMaxWidth()
                 .padding(5.dp),
+            textStyle = TextStyle(fontSize = 18.sp, color = Color(0xff111111)),
             shape = RoundedCornerShape(7.dp),
             value = state.value,
             onValueChange = {
@@ -78,21 +79,28 @@ fun ExpaList(state: MutableState<String>, list_items: Array<String>, lbl: String
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
-                unfocusedBorderColor = Color(0xfff0f0f0),
-                focusedBorderColor = Color(0xff2c5de5)
+                unfocusedBorderColor = Color(0xffd7d7d7),
+                focusedBorderColor = Color(0xff00a700)
             )
         )
         DropdownMenu(
             modifier = Modifier
-            .background(Color.White)
-            .exposedDropdownSize(true),
+                .background(Color(0xff373737))
+                .exposedDropdownSize(true),
             properties = PopupProperties(focusable = false),
+            shape = RoundedCornerShape(7.dp),
             expanded = expa,
             onDismissRequest = { expa = false },
         ) {
             list_items.forEach { opt ->
                 DropdownMenuItem(
-                    text = { Text(opt) },
+                    text = {
+                        Text(
+                            text = opt,
+                            fontSize = 18.sp,
+                            color = Color(0xffffffff)
+                        )
+                    },
                     onClick = {
                         state.value = opt
                         expa = false
@@ -144,10 +152,13 @@ fun ShowSettingsForm(ctx: Context) {
         ) {
             ExpaList(host_url, host_list, "HOST")
 
+            Spacer(Modifier.padding(10.dp))
+
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp),
+                textStyle = TextStyle(fontSize = 18.sp, color = Color(0xff111111)),
                 shape = RoundedCornerShape(7.dp),
                 value = wsnik,
                 onValueChange = {
@@ -164,16 +175,16 @@ fun ShowSettingsForm(ctx: Context) {
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
-                    unfocusedBorderColor = Color(0xffe0e0e0),
-                    focusedBorderColor = Color(0xff2c5de5)
+                    unfocusedBorderColor = Color(0xffd7d7d7),
+                    focusedBorderColor = Color(0xff00a700)
                 )
             )
 
-            Spacer(Modifier.padding(15.dp))
+            Spacer(Modifier.padding(20.dp))
 
             Row {
                 Button(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(3f),
                     colors = ButtonDefaults.buttonColors(
                         contentColor = Color(0xffffffff),
                         containerColor = Color(0xff2c5de5)
@@ -191,13 +202,15 @@ fun ShowSettingsForm(ctx: Context) {
                         } else {
                             ctx.startService(intent)
                         }
+
+                        activity?.finishAndRemoveTask();
                     }
                 ) {
                     Text(
                         text = ctx.getString(R.string.apply),
                         modifier = Modifier
-                        .padding(13.dp),
-                        fontSize = 18.sp
+                        .padding(7.dp),
+                        fontSize = 16.sp
                     )
                 }
 
@@ -206,8 +219,8 @@ fun ShowSettingsForm(ctx: Context) {
                 Button(
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = Color(0xffffffff),
-                        containerColor = Color(0xff2ce55d)
+                        contentColor = Color(0xff151515),
+                        containerColor = Color(0xffe7e7e7)
                     ),
                     shape = RoundedCornerShape(7.dp),
                     onClick = {
@@ -217,8 +230,8 @@ fun ShowSettingsForm(ctx: Context) {
                     Text(
                         text = ctx.getString(R.string.close),
                         modifier = Modifier
-                        .padding(13.dp),
-                        fontSize = 18.sp
+                        .padding(7.dp),
+                        fontSize = 16.sp
                     )
                 }
             }

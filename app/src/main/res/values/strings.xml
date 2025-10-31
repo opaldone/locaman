@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Locaman</string>
     <string name="head_set">Settings</string>
-    <string name="apply">Apply</string>
+    <string name="apply">Save and close</string>
     <string name="close">Close</string>
     <string name="host_url">opaldone.su</string>
     <string name="ws_port">8088</string>
@@ -9,8 +9,8 @@
     <string name="chat_pack">click.opaldone.opaloca</string>
     <string name="chat_act">click.opaldone.opaloca.OPALOCA_CHAT_START</string>
     <string-array name="host_list">
-        <item>admigo.so</item>
         <item>opaldone.su</item>
         <item>opaldone.click</item>
+        <item>admigo.so</item>
     </string-array>
 </resources>

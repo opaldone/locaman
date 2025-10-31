@@ -6,6 +6,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import androidx.core.app.NotificationCompat
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -75,8 +76,10 @@ class PersWsService : Service() {
 
     private fun buildNotification(msg: String): Notification {
         return NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_fr)
+            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_dr))
+            .setContentTitle("Locaman notification")
             .setContentText(msg)
-            .setSmallIcon(R.mipmap.ic_launcher_foreground)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .build()
     }

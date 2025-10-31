@@ -56,6 +56,9 @@ if [[ $par == "in" ]]; then
     declare apk="$pro/app/build/outputs/apk/debug/app-debug.apk"
     declare act="$app/$app.MainActivity"
 
+    # $aa -s "59TS7TW49XDQ8TEY" install $apk
+    # $aa -s "59TS7TW49XDQ8TEY" shell am start -n $act -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
+
     $aa install $apk
     $aa shell am start -n $act -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
     exit 0
