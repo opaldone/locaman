@@ -184,7 +184,7 @@ fun ShowSettingsForm(ctx: Context) {
 
             Row {
                 Button(
-                    modifier = Modifier.weight(3f),
+                    modifier = Modifier.weight(2f),
                     colors = ButtonDefaults.buttonColors(
                         contentColor = Color(0xffffffff),
                         containerColor = Color(0xff2c5de5)
@@ -210,7 +210,7 @@ fun ShowSettingsForm(ctx: Context) {
                         text = ctx.getString(R.string.apply),
                         modifier = Modifier
                         .padding(7.dp),
-                        fontSize = 16.sp
+                        fontSize = 14.sp
                     )
                 }
 
@@ -231,7 +231,7 @@ fun ShowSettingsForm(ctx: Context) {
                         text = ctx.getString(R.string.close),
                         modifier = Modifier
                         .padding(7.dp),
-                        fontSize = 16.sp
+                        fontSize = 14.sp
                     )
                 }
             }
