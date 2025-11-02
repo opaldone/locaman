@@ -195,6 +195,8 @@ class PersWsService : Service() {
             return
         }
 
+        wscid = null
+
         Handler(Looper.getMainLooper()).postDelayed({
             if (!isConnected()) {
                 connectWebSocket()

@@ -4,6 +4,7 @@ import okhttp3.WebSocketListener
 import okhttp3.WebSocket
 import okhttp3.Response
 import click.opaldone.locaman.dts.ShareTools
+import click.opaldone.locaman.loga.show_log
 
 class PersWsListener(
     private val ser: PersWsService,
@@ -40,8 +41,8 @@ class PersWsListener(
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         set_sha_con(false)
-        ser.scheduleReconnect()
         ser.notif("Failure: ${t.message}")
+        ser.scheduleReconnect()
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
