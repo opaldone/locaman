@@ -1,7 +1,7 @@
 package click.opaldone.locaman.dts
 
 import android.content.Context
-import android.content.SharedPreferences
+import androidx.core.content.edit
 import click.opaldone.locaman.R
 
 class ShareTools(
@@ -35,14 +35,20 @@ class ShareTools(
     }
 
     fun set_ws_connected(vain: Boolean) {
-        sha.edit().putBoolean(KCON, vain).apply()
+        sha.edit {
+            putBoolean(KCON, vain)
+        }
     }
 
     fun set_host_url(nu: String) {
-        sha.edit().putString(KURL, nu).apply()
+        sha.edit {
+            putString(KURL, nu)
+        }
     }
 
     fun set_nik(ni: String) {
-        sha.edit().putString(KNIK, ni).apply()
+        sha.edit {
+            putString(KNIK, ni)
+        }
     }
 }

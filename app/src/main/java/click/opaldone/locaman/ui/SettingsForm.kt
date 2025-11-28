@@ -9,15 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.em
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button
 import android.app.Activity
-import androidx.compose.ui.platform.LocalContext
-import kotlin.system.exitProcess
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.MutableState
@@ -29,7 +26,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,7 +40,6 @@ import android.content.Intent
 import click.opaldone.locaman.dts.ShareTools
 import click.opaldone.locaman.wsa.PersWsService
 import click.opaldone.locaman.R
-import click.opaldone.locaman.wsa.WsWorker
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,8 +66,7 @@ fun ExpaList(state: MutableState<String>, list_items: Array<String>, lbl: String
                 Text(
                     text = lbl,
                     fontSize = 12.sp,
-                    color = Color(0xff777777),
-                    style = TextStyle(letterSpacing = 0.3.em)
+                    color = Color(0xff777777)
                 )
             },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expa) },
@@ -124,7 +118,7 @@ fun ShowSettingsForm(ctx: Context) {
     var host_url: MutableState<String> = remember { mutableStateOf(sha.get_host_url()) }
     var wsnik by remember{ mutableStateOf(sha.get_nik()) }
     val host_list = stringArrayResource(R.array.host_list)
-    val activity = (LocalContext.current as? Activity)
+    val activity = (ctx as? Activity)
 
     Column() {
         Text(
@@ -150,7 +144,7 @@ fun ShowSettingsForm(ctx: Context) {
                 bottom = 15.dp
             )
         ) {
-            ExpaList(host_url, host_list, "HOST")
+            ExpaList(host_url, host_list, "Host")
 
             Spacer(Modifier.padding(10.dp))
 
@@ -166,10 +160,9 @@ fun ShowSettingsForm(ctx: Context) {
                 },
                 label = {
                     Text(
-                        text = "NICKNAME",
+                        text = "Map nickname",
                         fontSize = 12.sp,
-                        color = Color(0xff777777),
-                        style = TextStyle(letterSpacing = 0.3.em)
+                        color = Color(0xff777777)
                     )
                 },
                 colors = OutlinedTextFieldDefaults.colors(
@@ -197,11 +190,7 @@ fun ShowSettingsForm(ctx: Context) {
                             action = PersWsService.ACTION_SECHA
                         }
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            ctx.startForegroundService(intent)
-                        } else {
-                            ctx.startService(intent)
-                        }
+                        ctx.startForegroundService(intent)
 
                         activity?.finishAndRemoveTask();
                     }
