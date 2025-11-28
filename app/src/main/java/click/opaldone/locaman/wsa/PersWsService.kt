@@ -1,7 +1,6 @@
 package click.opaldone.locaman.wsa
 
 import android.app.Service
-import android.app.PendingIntent
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -57,17 +56,12 @@ class PersWsService : Service() {
     }
 
     private fun createChannel() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return
-        }
-
         val channel = NotificationChannel(
             channelId,
             channelName,
-            NotificationManager.IMPORTANCE_LOW
+            NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             description = "The service for persistent ws connection"
-            lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         }
 
         val manager = getSystemService(NotificationManager::class.java)
@@ -186,6 +180,7 @@ class PersWsService : Service() {
     }
 
     private fun startMe() {
+        wscid = null
         val notification = buildNotification("Started")
         startForeground(notificationId, notification)
     }

@@ -4,7 +4,6 @@ import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
-import android.content.Context
 import androidx.activity.compose.setContent
 import click.opaldone.locaman.ui.ShowSettingsForm
 
