@@ -20,10 +20,10 @@ class ShareTools(
         return sha.getString(KURL, ctx.getString(R.string.host_url))!!
     }
 
-    fun get_ws_url(cid: String): String {
+    fun get_ws_url(): String {
         val _url = get_host_url()
         val po = ctx.getString(R.string.ws_port)
-        return "wss://$_url:$po/ws/$cid/1"
+        return "wss://$_url:$po/ws/1"
     }
 
     fun get_nik(): String {
