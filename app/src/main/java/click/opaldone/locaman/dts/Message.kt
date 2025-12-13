@@ -7,7 +7,10 @@ import click.opaldone.locaman.loga.show_log
 
 data class Message(
     val tp: String,
-    val content: String
+    val nik: String,
+    val issender: Boolean = true,
+    val roomid: String?,
+    val content: String,
 ) {
     companion object {
         const val RLOCA    = "rloca"
@@ -24,15 +27,8 @@ data class Lo(
 )
 
 data class ClientHi(
-    val cid: String,
-    val nik: String,
     val bat: Int,
-    val issender: Boolean = true,
     val pos: Lo?
-)
-
-data class ReqChat(
-    val roomid: String
 )
 
 fun decMessage(msg: String): Message? {
@@ -44,20 +40,7 @@ fun decMessage(msg: String): Message? {
     return ret
 }
 
-fun decReqChat(cont: String): ReqChat? {
-    var ret: ReqChat? = null
-
-    try {
-        val gson = Gson()
-        ret = gson.fromJson(cont, ReqChat::class.java)
-    } catch(e: JsonSyntaxException) {
-        show_log("decReqChat error: ${e.message}")
-    }
-
-    return ret
-}
-
-fun getJsonLoca(cidin: String, nikin: String?, locain: Location?, batin: Int): String {
+fun getJsonLoca(nikin: String?, locain: Location?, batin: Int): String {
     val gson = Gson()
 
     var lo_pos: Lo? = null;
@@ -71,8 +54,6 @@ fun getJsonLoca(cidin: String, nikin: String?, locain: Location?, batin: Int): S
     }
 
     val ob = ClientHi(
-        cid = cidin,
-        nik = nikin ?: "",
         bat = batin,
         pos = lo_pos
     )
@@ -81,6 +62,8 @@ fun getJsonLoca(cidin: String, nikin: String?, locain: Location?, batin: Int): S
 
     val msg = Message(
         tp = Message.ALOCA,
+        nik = nikin ?: "",
+        roomid = null,
         content = cojs
     )
 
@@ -89,20 +72,14 @@ fun getJsonLoca(cidin: String, nikin: String?, locain: Location?, batin: Int): S
     return ret
 }
 
-fun getJsonHi(cidin: String, nikin: String?): String {
+fun getJsonHi(nikin: String?): String {
     val gson = Gson()
-
-    val ob = ClientHi(
-        cid = cidin,
-        nik = nikin ?: "",
-        bat = -1,
-        pos = null
-    )
-    val cojs = gson.toJson(ob);
 
     val msg = Message(
         tp = Message.SENDERHI,
-        content = cojs
+        nik = nikin ?: "",
+        roomid = null,
+        content = ""
     )
 
     val ret = gson.toJson(msg)

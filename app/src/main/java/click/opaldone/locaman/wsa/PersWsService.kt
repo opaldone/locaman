@@ -29,14 +29,12 @@ import click.opaldone.locaman.dts.ShareTools
 import click.opaldone.locaman.dts.Message
 import click.opaldone.locaman.dts.getJsonHi
 import click.opaldone.locaman.dts.decMessage
-import click.opaldone.locaman.dts.decReqChat
 import click.opaldone.locaman.dts.getJsonLoca
 import click.opaldone.locaman.loga.show_log
 
 class PersWsService : Service() {
     private var wscli: WebSocket? = null
     private var wslistener: PersWsListener? = null
-    private var wscid: String? = null
     private var wsnik: String? = null
     private var wsurl: String? = null
 
@@ -90,16 +88,11 @@ class PersWsService : Service() {
     }
 
     fun send_hi() {
-        if (wscid == null) return
-
-        val js = getJsonHi(wscid!!, wsnik)
+        val js = getJsonHi(wsnik)
         _send(js)
     }
 
     fun send_loca() {
-        if (wscid == null) return
-
-
         if (ContextCompat.checkSelfPermission(
             this, Manifest.permission.ACCESS_COARSE_LOCATION
         ) != PackageManager.PERMISSION_GRANTED) {
@@ -113,7 +106,7 @@ class PersWsService : Service() {
             val bm = getSystemService(BATTERY_SERVICE) as BatteryManager
             val bat = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
-            val js = getJsonLoca(wscid!!, wsnik, loca, bat)
+            val js = getJsonLoca(wsnik, loca, bat)
 
             _send(js)
         }
@@ -137,9 +130,7 @@ class PersWsService : Service() {
             return
         }
 
-        val rech = decReqChat(msg.content)
-
-        if (rech == null) {
+        if (msg.roomid == null) {
             notif("Trying start chat roomid is empty")
             return
         }
@@ -151,7 +142,7 @@ class PersWsService : Service() {
             return
         }
 
-        launchIntent.putExtra("roomid", rech.roomid)
+        launchIntent.putExtra("roomid", msg.roomid)
 
         launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(launchIntent)
@@ -159,7 +150,7 @@ class PersWsService : Service() {
         val intent = Intent(chat_act).apply {
             setPackage(pack)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra("roomid", rech?.roomid)
+            putExtra("roomid", msg.roomid)
         }
         sendBroadcast(intent)
     }
@@ -180,7 +171,6 @@ class PersWsService : Service() {
     }
 
     private fun startMe() {
-        wscid = null
         val notification = buildNotification("Started")
         startForeground(notificationId, notification)
     }
@@ -190,8 +180,6 @@ class PersWsService : Service() {
             return
         }
 
-        wscid = null
-
         Handler(Looper.getMainLooper()).postDelayed({
             if (!isConnected()) {
                 connectWebSocket()
@@ -199,17 +187,10 @@ class PersWsService : Service() {
         }, 5000)
     }
 
-    private fun set_cid() {
-        if (wscid != null) return
-
-        wscid = "se-" + UUID.randomUUID().toString().replace("-", "").substring(0, 7)
-    }
-
     private fun connectWebSocket() {
-        set_cid()
         val sha = ShareTools(this)
         wsnik = sha.get_nik()
-        wsurl = sha.get_ws_url(wscid!!)
+        wsurl = sha.get_ws_url()
 
         val request = Request.Builder()
             .url(wsurl!!)
@@ -220,11 +201,9 @@ class PersWsService : Service() {
     }
 
     private fun settingsChanged() {
-        set_cid()
-
         val sha = ShareTools(this)
         val nik = sha.get_nik()
-        val url = sha.get_ws_url(wscid!!)
+        val url = sha.get_ws_url()
 
         if (url != wsurl) {
             wscli?.close(1000, "Url was changed")
