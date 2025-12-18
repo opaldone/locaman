@@ -247,10 +247,6 @@ class PersWsService : Service() {
             ACTION_SECHA -> {
                 settingsChanged()
             }
-            else -> {
-                startMe()
-                connectWebSocket()
-            }
         }
 
         return START_REDELIVER_INTENT
