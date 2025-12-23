@@ -166,6 +166,11 @@ class PersWsService : Service() {
         }
     }
 
+    private fun close_ws(reconnect: Boolean) {
+        need_reconnect = reconnect
+        wscli?.close(1000, "Service destroyed")
+    }
+
     private fun isConnected(): Boolean {
         return wslistener?.isConnected() ?: false
     }
@@ -181,13 +186,17 @@ class PersWsService : Service() {
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if (!isConnected()) {
+            if (isConnected()) {
+                notif("Connected")
+            } else {
                 connectWebSocket()
             }
         }, 5000)
     }
 
     private fun connectWebSocket() {
+        close_ws(true)
+
         val sha = ShareTools(this)
         wsnik = sha.get_nik()
         wsurl = sha.get_ws_url()
@@ -206,7 +215,7 @@ class PersWsService : Service() {
         val url = sha.get_ws_url()
 
         if (url != wsurl) {
-            wscli?.close(1000, "Url was changed")
+            close_ws(true)
             return
         }
 
@@ -253,11 +262,8 @@ class PersWsService : Service() {
     }
 
     override fun onDestroy() {
-        need_reconnect = false
-
-        wscli?.close(1000, "Service destroyed")
+        close_ws(false)
         okcli.dispatcher.executorService.shutdown()
-
         super.onDestroy()
     }
 
