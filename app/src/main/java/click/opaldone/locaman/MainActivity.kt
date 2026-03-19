@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
 import androidx.activity.compose.setContent
+import click.opaldone.locaman.ui.theme.LocamanTheme
 import click.opaldone.locaman.ui.ShowSettingsForm
 
 class MainActivity : ComponentActivity() {
@@ -29,7 +30,9 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            ShowSettingsForm(this)
+            LocamanTheme {
+                ShowSettingsForm(this)
+            }
         }
     }
 }

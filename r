@@ -3,7 +3,7 @@
 cd $(dirname "${BASH_SOURCE[0]}")
 
 declare pro=$("pwd")
-declare aa="/mnt/terik/a_my/java/android_sdk/platform-tools/adb"
+declare aa="$ANDROID_HOME/platform-tools/adb"
 declare app="click.opaldone.locaman"
 
 declare par=$1

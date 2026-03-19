@@ -55,7 +55,9 @@ fun ExpaList(state: MutableState<String>, list_items: Array<String>, lbl: String
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
                 .fillMaxWidth()
                 .padding(5.dp),
-            textStyle = TextStyle(fontSize = 18.sp, color = Color(0xff111111)),
+            textStyle = TextStyle(
+                fontSize = 18.sp,
+            ),
             shape = RoundedCornerShape(7.dp),
             value = state.value,
             onValueChange = {
@@ -66,16 +68,9 @@ fun ExpaList(state: MutableState<String>, list_items: Array<String>, lbl: String
                 Text(
                     text = lbl,
                     fontSize = 12.sp,
-                    color = Color(0xff777777)
                 )
             },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expa) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                unfocusedBorderColor = Color(0xffd7d7d7),
-                focusedBorderColor = Color(0xff00a700)
-            )
         )
         DropdownMenu(
             modifier = Modifier
@@ -152,7 +147,9 @@ fun ShowSettingsForm(ctx: Context) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp),
-                textStyle = TextStyle(fontSize = 18.sp, color = Color(0xff111111)),
+                textStyle = TextStyle(
+                    fontSize = 18.sp
+                ),
                 shape = RoundedCornerShape(7.dp),
                 value = wsnik,
                 onValueChange = {
@@ -161,16 +158,9 @@ fun ShowSettingsForm(ctx: Context) {
                 label = {
                     Text(
                         text = "Map nickname",
-                        fontSize = 12.sp,
-                        color = Color(0xff777777)
+                        fontSize = 12.sp
                     )
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    unfocusedBorderColor = Color(0xffd7d7d7),
-                    focusedBorderColor = Color(0xff00a700)
-                )
+                }
             )
 
             Spacer(Modifier.padding(20.dp))
@@ -178,10 +168,6 @@ fun ShowSettingsForm(ctx: Context) {
             Row {
                 Button(
                     modifier = Modifier.weight(2f),
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = Color(0xffffffff),
-                        containerColor = Color(0xff2c5de5)
-                    ),
                     shape = RoundedCornerShape(7.dp),
                     onClick = {
                         saveSettings(ctx, host_url.value, wsnik)
@@ -207,10 +193,6 @@ fun ShowSettingsForm(ctx: Context) {
 
                 Button(
                     modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = Color(0xff151515),
-                        containerColor = Color(0xffe7e7e7)
-                    ),
                     shape = RoundedCornerShape(7.dp),
                     onClick = {
                         activity?.finishAndRemoveTask();
