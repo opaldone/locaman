@@ -35,6 +35,8 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gsonver" }
 gms = { module = "com.google.android.gms:play-services-location", version.ref = "gmsver"}
 # material3
 mater3 = { module = "androidx.compose.material3:material3", version.ref = "matver" }
+# icons
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
