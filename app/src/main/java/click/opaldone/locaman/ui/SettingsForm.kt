@@ -12,11 +12,19 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.*
 import android.app.Activity
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -101,6 +109,23 @@ fun ExpaList(state: MutableState<String>, list_items: Array<String>, lbl: String
     }
 }
 
+@Composable
+fun VersionInfo() {
+    val context = LocalContext.current
+    val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+
+    val versionName = packageInfo.versionName
+
+    Text(
+        text = "Version $versionName",
+        modifier = Modifier.fillMaxWidth(),
+        color = Color(0xff777777),
+        fontSize = 14.sp,
+        textAlign = TextAlign.Center
+    )
+}
+
+
 fun saveSettings(ctx: Context, urlin: String, nikin: String) {
     val sha = ShareTools(ctx)
     sha.set_host_url(urlin)
@@ -111,7 +136,7 @@ fun saveSettings(ctx: Context, urlin: String, nikin: String) {
 fun ShowSettingsForm(ctx: Context) {
     val sha = ShareTools(ctx)
     var host_url: MutableState<String> = remember { mutableStateOf(sha.get_host_url()) }
-    var wsnik by remember{ mutableStateOf(sha.get_nik()) }
+    var wsnik = remember{ mutableStateOf(sha.get_nik()) }
     val host_list = stringArrayResource(R.array.host_list)
     val activity = (ctx as? Activity)
 
@@ -151,15 +176,30 @@ fun ShowSettingsForm(ctx: Context) {
                     fontSize = 18.sp
                 ),
                 shape = RoundedCornerShape(7.dp),
-                value = wsnik,
+                value = wsnik.value,
                 onValueChange = {
-                    wsnik = it
+                    wsnik.value = it
                 },
                 label = {
                     Text(
                         text = "Map nickname",
                         fontSize = 12.sp
                     )
+                },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            wsnik.value = ""
+                        },
+                        colors = IconButtonDefaults.iconButtonColors(
+                            contentColor = MaterialTheme.colorScheme.primary
+                        ),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Clear,
+                            contentDescription = "Clear"
+                        )
+                    }
                 }
             )
 
@@ -170,7 +210,7 @@ fun ShowSettingsForm(ctx: Context) {
                     modifier = Modifier.weight(2f),
                     shape = RoundedCornerShape(7.dp),
                     onClick = {
-                        saveSettings(ctx, host_url.value, wsnik)
+                        saveSettings(ctx, host_url.value, wsnik.value)
 
                         val intent = Intent(ctx, PersWsService::class.java).apply {
                             action = PersWsService.ACTION_SECHA
@@ -206,6 +246,10 @@ fun ShowSettingsForm(ctx: Context) {
                     )
                 }
             }
+
+            Spacer(Modifier.padding(20.dp))
+
+            VersionInfo()
         }
     }
 }
