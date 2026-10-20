@@ -24,6 +24,13 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+
+import android.media.MediaPlayer
+import androidx.compose.runtime.DisposableEffect
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.content.Context
+
 import click.opaldone.locaman.R
 import click.opaldone.locaman.dts.ShareTools
 import click.opaldone.locaman.dts.Message
@@ -37,9 +44,11 @@ class PersWsService : Service() {
     private var wslistener: PersWsListener? = null
     private var wsnik: String? = null
     private var wsurl: String? = null
+    private var aMedia: MediaPlayer? = null
 
     private lateinit var okcli: OkHttpClient
     private lateinit var locli: FusedLocationProviderClient
+
 
     private val notificationId = 18798
     private val channelId = "locaman_service_channel"
@@ -51,6 +60,47 @@ class PersWsService : Service() {
         const val ACTION_START = "ACTION_START"
         const val ACTION_STOP = "ACTION_STOP"
         const val ACTION_SECHA = "ACTION_SECHA"
+    }
+
+    private fun createMediaAllert() {
+        aMedia = MediaPlayer().apply {
+            val afd = applicationContext.resources.openRawResourceFd(R.raw.wa)
+            setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+            afd.close()
+
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build()
+            )
+            prepare()
+        }
+    }
+
+    private fun playMediaAllert() {
+        val aMan = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val sType = AudioManager.STREAM_ALARM
+        val origVol = aMan.getStreamVolume(sType)
+        val maxVol = aMan.getStreamMaxVolume(sType)
+        aMan.setStreamVolume(sType, maxVol, 0)
+
+        aMedia?.let { player ->
+            if (player.isPlaying) {
+                player.seekTo(0)
+            }
+
+            player.setOnCompletionListener {
+                aMan.setStreamVolume(sType, origVol, 0)
+            }
+
+            player.start()
+        }
+    }
+
+    private fun destroyMediaAllert() {
+        aMedia?.release()
+        aMedia = null
     }
 
     private fun createChannel() {
@@ -162,6 +212,7 @@ class PersWsService : Service() {
             when(msg.tp) {
                 Message.RLOCA -> send_loca()
                 Message.GOCHAT -> try_start_chat(msg)
+                Message.AMED -> playMediaAllert()
             }
         }
     }
@@ -241,6 +292,7 @@ class PersWsService : Service() {
 
         locli = LocationServices.getFusedLocationProviderClient(this)
 
+        createMediaAllert()
         createChannel()
     }
 
@@ -264,6 +316,8 @@ class PersWsService : Service() {
     override fun onDestroy() {
         close_ws(false)
         okcli.dispatcher.executorService.shutdown()
+        destroyMediaAllert()
+
         super.onDestroy()
     }
 
