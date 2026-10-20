@@ -13,10 +13,11 @@ data class Message(
     val content: String,
 ) {
     companion object {
-        const val RLOCA    = "rloca"
-        const val ALOCA    = "aloca"
+        const val RLOCA = "rloca"
+        const val ALOCA = "aloca"
         const val SENDERHI = "sender_hi"
         const val GOCHAT = "go_chat"
+        const val AMED = "amed"
     }
 }
 

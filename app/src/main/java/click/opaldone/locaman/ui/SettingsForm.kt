@@ -61,8 +61,7 @@ fun ExpaList(state: MutableState<String>, list_items: Array<String>, lbl: String
         OutlinedTextField(
             modifier = Modifier
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
-                .fillMaxWidth()
-                .padding(5.dp),
+                .fillMaxWidth(),
             textStyle = TextStyle(
                 fontSize = 18.sp,
             ),
@@ -78,7 +77,11 @@ fun ExpaList(state: MutableState<String>, list_items: Array<String>, lbl: String
                     fontSize = 12.sp,
                 )
             },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expa) },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(
+                    expanded = expa
+                )
+            },
         )
         DropdownMenu(
             modifier = Modifier
@@ -143,11 +146,11 @@ fun ShowSettingsForm(ctx: Context) {
     Column() {
         Text(
             text = ctx.getString(R.string.head_set),
-            color = Color(0xffffffff),
-            fontSize = 24.sp,
+            color = MaterialTheme.colorScheme.onSecondary,
+            fontSize = 18.sp,
             modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xff2c5de5))
+            .background(MaterialTheme.colorScheme.tertiary)
             .padding(
                 start = 30.dp,
                 end = 30.dp,
@@ -170,8 +173,7 @@ fun ShowSettingsForm(ctx: Context) {
 
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp),
+                    .fillMaxWidth(),
                 textStyle = TextStyle(
                     fontSize = 18.sp
                 ),
@@ -192,7 +194,7 @@ fun ShowSettingsForm(ctx: Context) {
                             wsnik.value = ""
                         },
                         colors = IconButtonDefaults.iconButtonColors(
-                            contentColor = MaterialTheme.colorScheme.primary
+                            contentColor = MaterialTheme.colorScheme.onSecondary
                         ),
                     ) {
                         Icon(
@@ -236,7 +238,11 @@ fun ShowSettingsForm(ctx: Context) {
                     shape = RoundedCornerShape(7.dp),
                     onClick = {
                         activity?.finishAndRemoveTask();
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+
                 ) {
                     Text(
                         text = ctx.getString(R.string.close),

@@ -2,10 +2,11 @@ package click.opaldone.locaman.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val Blu = Color(0xFF2C5DE5)
+val Whi = Color(0xFFFFFFFF)
+val WhiG = Color(0xFFBEB9C4)
+val Red = Color(0xFFFF3311)
+val Bla = Color(0xFF5D5962)
+val HeaD = Color(0xFF070707)
+val HeaL = Color(0xFFf0f0f0)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
